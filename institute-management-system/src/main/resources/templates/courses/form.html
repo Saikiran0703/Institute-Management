@@ -1,48 +1,43 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Add/Edit Course</title>
+    <title>Courses List</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
 <div class="container mt-4">
-    <h2 th:text="<span class="math-inline">\{course\.id \=\= null ? 'Add Course' \: 'Edit Course'\}"\></h2\>
-<div th\:if\="</span>{successMessage}" class="alert alert-success">
-        <i class="fas fa-check-circle"></i> <span th:text="<span class="math-inline">\{successMessage\}"\></span\>
-</div\>
-<div th\:if\="</span>{errorMessage}" class="alert alert-danger">
-        <i class="fas fa-exclamation-triangle"></i> <span th:text="<span class="math-inline">\{errorMessage\}"\></span\>
-</div\>
-<form th\:action\="@\{/courses/save\}" th\:object\="</span>{course}" method="post">
-        <input type="hidden" th:field="*{id}">
+    <h2>Courses</h2>
+    <a class="btn btn-success mb-3" href="/courses/add">Add Course</a>
 
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" th:field="*{name}" class="form-control"
-                   placeholder="Enter course name" required>
-            <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
-        </div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Duration</th>
+            <th>Instructor</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="course : ${courses}">
+            <td th:text="${course.name}">Course Name</td>
+            <td th:text="${course.description}">Description</td>
+            <td th:text="${course.duration}">Duration</td>
+			<td>
+			    <span th:if="${course.instructor != null}" th:text="${course.instructor.name}">Instructor Name</span>
+			    <span th:unless="${course.instructor != null}">N/A</span>
+			</td>
 
-        <div class="form-group">
-            <label for="description">Description</label>
-            <textarea id="description" th:field="*{description}" class="form-control"
-                      placeholder="Enter course description"></textarea>
-        </div>
 
-        <div class="form-group">
-            <label for="duration">Duration</label>
-            <input type="text" id="duration" th:field="*{duration}" class="form-control"
-                   placeholder="Enter course duration">
-        </div>
-
-        <div class="form-group">
-            <label for="instructor">Instructor</label>
-            <select id="instructor" th:field="*{instructor}" class="form-control" required>
-                <option value="">Select an Instructor</option>
-                <option th:each="instructor : <span class="math-inline">\{instructors\}" th\:value\="</span>{instructor.id}" th:text="<span class="math-inline">\{instructor\.name\}"\></option\>
-</select\>
-<div class\="text\-danger" th\:if\="</span>{#fields.hasErrors('instructor')}" th:errors="*{instructor}"></div>
-        </div>
-
-        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Course</button>
+            <td>
+                <a th:href="@{'/courses/edit/' + ${course.id}}" class="btn btn-primary btn-sm">Edit</a>
+                <a th:href="@{'/courses/delete/' + ${course.id}}" class="btn btn-danger btn-sm"
+                   onclick="return confirm('Are you sure you want to delete this course?');">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
