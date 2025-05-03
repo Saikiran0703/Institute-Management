@@ -2,65 +2,37 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Add/Edit Student</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container mt-4">
-    <h2 th:text="${student.id == null ? 'Add Student' : 'Edit Student'}"></h2>
-
-    <div th:if="${successMessage}" class="alert alert-success">
-        <i class="fas fa-check-circle"></i> <span th:text="${successMessage}"></span>
-    </div>
-    <div th:if="${errorMessage}" class="alert alert-danger">
-        <i class="fas fa-exclamation-triangle"></i> <span th:text="${errorMessage}"></span>
-    </div>
-
+    <h2 th:text="${student.id == 0 ? 'Add Student' : 'Edit Student'}"></h2>
     <form th:action="@{/students/save}" th:object="${student}" method="post">
-        <input type="hidden" th:field="*{id}">
-
         <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" th:field="*{name}" class="form-control"
-                   placeholder="Enter student name" required>
-            <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+            <label>Name</label>
+            <input type="text" th:field="*{name}" class="form-control" required>
         </div>
-
         <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" th:field="*{email}" class="form-control"
-                   placeholder="Enter student email" required>
-            <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+            <label>Email</label>
+            <input type="email" th:field="*{email}" class="form-control" required>
         </div>
-
         <div class="form-group">
-            <label for="phone">Phone</label>
-            <input type="text" id="phone" th:field="*{phone}" class="form-control"
-                   placeholder="Enter student phone (10 digits)" required>
-            <div class="text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+            <label>Phone</label>
+            <input type="text" th:field="*{phone}" class="form-control">
         </div>
-
         <div class="form-group">
-            <label for="enrollmentDate">Enrollment Date</label>
-            <input type="date" id="enrollmentDate" th:field="*{enrollmentDate}" class="form-control">
+            <label>Enrollment Date</label>
+            <input type="date" th:field="*{enrollmentDate}" class="form-control">
         </div>
-
         <div class="form-group">
-            <label for="course">Course</label>
-            <select id="course" th:field="*{course}" class="form-control" required>
-                <option value="">Select a Course</option>
-                <option th:each="course : ${courses}" th:value="${course.id}" th:text="${course.name}"></option>
+            <label>Course</label>
+            <select th:field="*{course}" class="form-control" required>
+                <option th:each="course : ${courses}" th:value="${course}" th:text="${course.name}"></option>
             </select>
-            <div class="text-danger" th:if="${#fields.hasErrors('course')}" th:errors="*{course}"></div>
         </div>
-
-        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Student</button>
-        <a href="/students" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Cancel</a>
+        <button type="submit" class="btn btn-primary mt-3">Save</button>
+        <a href="/students" class="btn btn-secondary mt-3">Cancel</a>
     </form>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
